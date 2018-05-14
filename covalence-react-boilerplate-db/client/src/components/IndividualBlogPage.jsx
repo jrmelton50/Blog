@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { oneBlogIncludingUserName } from "../services/blogs";
 
 class IndividualBlogPage extends Component {
     
@@ -14,11 +15,9 @@ class IndividualBlogPage extends Component {
     }
 
     componentDidMount() {
-        fetch(`api/blogs/bloguser/${this.props.match.params.id}`)
-        .then( (res) => {
-            return res.json();
-        })
+        oneBlogIncludingUserName(this.props.match.params.id)
         .then( (obj) => {
+            console.log("obj = ", obj);
             let blog = obj[0];
             this.setState({
                 blogID: blog[0].blogID,
@@ -31,6 +30,25 @@ class IndividualBlogPage extends Component {
             console.log(err);
         });
     }
+
+    // componentDidMount() {
+    //     fetch(`api/blogs/bloguser/${this.props.match.params.id}`)
+    //     .then( (res) => {
+    //         return res.json();
+    //     })
+    //     .then( (obj) => {
+    //         let blog = obj[0];
+    //         this.setState({
+    //             blogID: blog[0].blogID,
+    //             blogTitle: blog[0].blogTitle,
+    //             authorName: blog[0].authorName,
+    //             blogContent: blog[0].blogContent
+    //         });
+    //     })
+    //     .catch( (err) => {
+    //         console.log(err);
+    //     });
+    // }
 
     render() {
         return ( 

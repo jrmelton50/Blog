@@ -30,6 +30,7 @@ class Table {
     }
 
     async insert(row) {
+        console.log("row = ", row);
         let columns = Object.keys(row);
         let values = Object.values(row);
         let placeholderString = generatePlaceholders(values);

@@ -14,7 +14,9 @@ async function executeQuery(sql, args = []) {
 }
 
 function callProcedure(procedureName, args = []) {
+    console.log("args = ", args);
     let placeholders = generatePlaceholders(args);
+    console.log("placeholders = ", placeholders);
     let callString = `CALL ${procedureName}(${placeholders});`; // CALL GetChirps();, or CALL InsertChirp(?,?,?);
     return executeQuery(callString, args);
 }
@@ -35,8 +37,11 @@ async function empty(procedureName, args = []) {
 
 function generatePlaceholders(args = []) {
     let placeholders = '';
+    // console.log("args = ", args);
+    // console.log("args.length = ", args.length);
     if (args.length > 0) {
         for (let i = 0; i < args.length; i++) {
+            // console.log("args[i] = ", args[i]);
             if (i === args.length - 1) { // if we are on the last argument in the array
                 placeholders += '?';
             } else {
@@ -60,6 +65,7 @@ function getConnection() {
 }
 
 function sendQueryToDB(connection, sql, args = []) {
+    console.log("sql = ", sql);
     return new Promise((resolve, reject) => {
         connection.query(sql, args, (err, result) => {
             connection.release();

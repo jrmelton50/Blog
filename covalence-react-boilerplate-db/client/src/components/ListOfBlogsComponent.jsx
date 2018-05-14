@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import {Link} from "react-router-dom";
+import { allBlogsIncludingUserNames } from '../services/blogs';
 
 
-class ListOfBlogsComponent extends Component {
+export default class ListOfBlogsComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -13,13 +14,10 @@ class ListOfBlogsComponent extends Component {
     }
 
     componentDidMount() {
-        fetch(`/api/blogs/blogsusers`)
-        .then( (res) => {
-            return res.json();
-        })
-        .then( (obj) => {
+        allBlogsIncludingUserNames()
+        .then( (blogs) => {
             this.setState({
-                blogs: obj[0]
+                blogs: blogs[0]
             });
         })
         .catch( (err) => {
@@ -33,9 +31,9 @@ class ListOfBlogsComponent extends Component {
                 <div className="card w-75 mt-3 ml-auto mr-auto mb-auto" key={item.blogID}>
                     <div className="card-body">
                         <h5 className="card-title"> {item.blogTitle} </h5>
-                        <h6 className="card-subtitle mb-2 text-muted"> {item.authorName} </h6>
                         <p className="card-text"> {item.blogContent} </p>
-                        <Link className="card-link" to={`/${item.blogID}`}> View Details </Link>
+                        <h6 className="card-subtitle mb-2 text-muted"> By {item.authorName} * {item._created} </h6>
+                        <Link className="card-link textColorTeal" to={`/blog/${item.blogID}`}> View Details </Link>
                     </div>
                 </div>
             ); 
@@ -43,5 +41,3 @@ class ListOfBlogsComponent extends Component {
         return <div className="mt-5"> {blogs} </div>
     }
 }
-
-export default ListOfBlogsComponent;
